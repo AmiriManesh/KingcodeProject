@@ -10,7 +10,7 @@ public class PlayerInputSystem : MonoBehaviour
     private float speed = 10f;
 
     private NavMeshAgent playerNavMesh;
-    private LayerMask clickableLayers;
+    [SerializeField] private LayerMask clickableLayers;
     private float lookRotationSpeed = 8f;
 
     
@@ -42,8 +42,9 @@ public class PlayerInputSystem : MonoBehaviour
     private void ClicktoMove()
     {
         RaycastHit hit;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out  hit, clickableLayers))
+        if(Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out  hit))
         {
+            Debug.Log("Moving");
             playerNavMesh.destination = hit.point;
 
         }
@@ -54,5 +55,6 @@ public class PlayerInputSystem : MonoBehaviour
         playerRigidBody = GetComponent<Rigidbody>();
         playerNavMesh = GetComponent<NavMeshAgent>();
         playerInputAction = new PlayerInputAction();
+        AssignInputs();
     }
 }

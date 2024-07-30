@@ -15,9 +15,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PointClick",
+                    "name": "PointCLick",
                     "type": "Button",
-                    "id": "827505e0-d322-40cf-a463-41ae02d765a7",
+                    "id": "d417c182-de50-4ea1-9d48-61adeb9d3148",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -42,7 +42,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "WASD_Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -53,7 +53,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "WASD_Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -64,7 +64,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "WASD_Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -75,10 +75,21 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "WASD_Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7bbc4a55-3a64-40f1-94ad-a4a16c48df12",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "WASD_Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -86,13 +97,35 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "PointClick",
+                    "groups": "PointClick",
+                    "action": "PointCLick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": []
+        },
+        {
+            "name": "PointClick",
+            "bindingGroup": "PointClick",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Touch",
+            "bindingGroup": "Touch",
+            "devices": []
+        }
+    ]
 }

@@ -37,9 +37,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""PointClick"",
+                    ""name"": ""PointCLick"",
                     ""type"": ""Button"",
-                    ""id"": ""827505e0-d322-40cf-a463-41ae02d765a7"",
+                    ""id"": ""d417c182-de50-4ea1-9d48-61adeb9d3148"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -64,7 +64,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -75,7 +75,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -86,7 +86,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -97,10 +97,21 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7bbc4a55-3a64-40f1-94ad-a4a16c48df12"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""WASD_Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -108,20 +119,42 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PointClick"",
+                    ""groups"": ""PointClick"",
+                    ""action"": ""PointCLick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": []
+        },
+        {
+            ""name"": ""PointClick"",
+            ""bindingGroup"": ""PointClick"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Touch"",
+            ""bindingGroup"": ""Touch"",
+            ""devices"": []
+        }
+    ]
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_WASD_Movement = m_Player.FindAction("WASD_Movement", throwIfNotFound: true);
-        m_Player_PointClick = m_Player.FindAction("PointClick", throwIfNotFound: true);
+        m_Player_PointCLick = m_Player.FindAction("PointCLick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -182,13 +215,13 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_WASD_Movement;
-    private readonly InputAction m_Player_PointClick;
+    private readonly InputAction m_Player_PointCLick;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @WASD_Movement => m_Wrapper.m_Player_WASD_Movement;
-        public InputAction @PointClick => m_Wrapper.m_Player_PointClick;
+        public InputAction @PointCLick => m_Wrapper.m_Player_PointCLick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -201,9 +234,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @WASD_Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
                 @WASD_Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
                 @WASD_Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
-                @PointClick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
-                @PointClick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
-                @PointClick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
+                @PointCLick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointCLick;
+                @PointCLick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointCLick;
+                @PointCLick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointCLick;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -211,16 +244,43 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @WASD_Movement.started += instance.OnWASD_Movement;
                 @WASD_Movement.performed += instance.OnWASD_Movement;
                 @WASD_Movement.canceled += instance.OnWASD_Movement;
-                @PointClick.started += instance.OnPointClick;
-                @PointClick.performed += instance.OnPointClick;
-                @PointClick.canceled += instance.OnPointClick;
+                @PointCLick.started += instance.OnPointCLick;
+                @PointCLick.performed += instance.OnPointCLick;
+                @PointCLick.canceled += instance.OnPointCLick;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
+    private int m_PointClickSchemeIndex = -1;
+    public InputControlScheme PointClickScheme
+    {
+        get
+        {
+            if (m_PointClickSchemeIndex == -1) m_PointClickSchemeIndex = asset.FindControlSchemeIndex("PointClick");
+            return asset.controlSchemes[m_PointClickSchemeIndex];
+        }
+    }
+    private int m_TouchSchemeIndex = -1;
+    public InputControlScheme TouchScheme
+    {
+        get
+        {
+            if (m_TouchSchemeIndex == -1) m_TouchSchemeIndex = asset.FindControlSchemeIndex("Touch");
+            return asset.controlSchemes[m_TouchSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnWASD_Movement(InputAction.CallbackContext context);
-        void OnPointClick(InputAction.CallbackContext context);
+        void OnPointCLick(InputAction.CallbackContext context);
     }
 }

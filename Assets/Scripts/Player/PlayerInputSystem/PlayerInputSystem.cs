@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
-using System;
 
 public class PlayerInputSystem : MonoBehaviour
 {
@@ -10,22 +9,10 @@ public class PlayerInputSystem : MonoBehaviour
     private float speed = 10f;
 
     private NavMeshAgent playerNavMesh;
-    [SerializeField] private LayerMask clickableLayers;
-    private float lookRotationSpeed = 8f;
-
     
     private void Awake()
     {
         GetComps();
-    }
-
-    private void OnEnable()
-    {
-        playerInputAction.Player.Enable();
-    }
-    private void OnDisable()
-    {
-        playerInputAction.Player.Disable();
     }
 
     private void FixedUpdate()
@@ -34,20 +21,17 @@ public class PlayerInputSystem : MonoBehaviour
         playerRigidBody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
     }
 
-    private void AssignInputs()
+    private void AssignMouseInputs()
     {
-        playerInputAction.Player.PointClick.performed += ctx => ClicktoMove();
+        playerInputAction.Player.PointCLick.performed += ctx => ClicktoMove();
     }
 
     private void ClicktoMove()
     {
         RaycastHit hit;
-        if(Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out  hit))
-        {
-            Debug.Log("Moving");
+        if(Physics.Raycast(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), out  hit)
+            && !hit.transform.CompareTag("Stick"))
             playerNavMesh.destination = hit.point;
-
-        }
     }
 
     private void GetComps()
@@ -55,6 +39,14 @@ public class PlayerInputSystem : MonoBehaviour
         playerRigidBody = GetComponent<Rigidbody>();
         playerNavMesh = GetComponent<NavMeshAgent>();
         playerInputAction = new PlayerInputAction();
-        AssignInputs();
+        AssignMouseInputs();
+    }
+    private void OnEnable()
+    {
+        playerInputAction.Player.Enable();
+    }
+    private void OnDisable()
+    {
+        playerInputAction.Player.Disable();
     }
 }

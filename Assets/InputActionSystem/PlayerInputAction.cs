@@ -28,13 +28,22 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
             ""id"": ""bee364c6-0de3-4bdc-a89e-9f513fc6838a"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""WASD_Movement"",
                     ""type"": ""Value"",
                     ""id"": ""cf0b1e39-d333-4b96-855d-fd897e342a11"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PointClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""827505e0-d322-40cf-a463-41ae02d765a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -45,7 +54,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""WASD_Movement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +65,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -67,7 +76,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -78,7 +87,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -89,9 +98,20 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""WASD_Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8acaa724-e213-4a91-826e-b7f7458a712e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -100,7 +120,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_WASD_Movement = m_Player.FindAction("WASD_Movement", throwIfNotFound: true);
+        m_Player_PointClick = m_Player.FindAction("PointClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,12 +181,14 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_WASD_Movement;
+    private readonly InputAction m_Player_PointClick;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @WASD_Movement => m_Wrapper.m_Player_WASD_Movement;
+        public InputAction @PointClick => m_Wrapper.m_Player_PointClick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -175,22 +198,29 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @WASD_Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
+                @WASD_Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
+                @WASD_Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWASD_Movement;
+                @PointClick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
+                @PointClick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
+                @PointClick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPointClick;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Movement.started += instance.OnMovement;
-                @Movement.performed += instance.OnMovement;
-                @Movement.canceled += instance.OnMovement;
+                @WASD_Movement.started += instance.OnWASD_Movement;
+                @WASD_Movement.performed += instance.OnWASD_Movement;
+                @WASD_Movement.canceled += instance.OnWASD_Movement;
+                @PointClick.started += instance.OnPointClick;
+                @PointClick.performed += instance.OnPointClick;
+                @PointClick.canceled += instance.OnPointClick;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
     public interface IPlayerActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnWASD_Movement(InputAction.CallbackContext context);
+        void OnPointClick(InputAction.CallbackContext context);
     }
 }

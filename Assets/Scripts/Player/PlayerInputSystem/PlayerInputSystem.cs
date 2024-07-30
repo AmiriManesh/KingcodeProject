@@ -18,7 +18,7 @@ public class PlayerInputSystem : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 inputVector = playerInputAction.Player.WASD_Movement.ReadValue<Vector2>();
-        playerRigidBody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
+        playerRigidBody.AddForce(new Vector3(inputVector.x, transform.position.y, inputVector.y) * speed, ForceMode.Force);
     }
 
     private void AssignMouseInputs()
